@@ -139,7 +139,7 @@ function CompletedBookingList({ completedBookings }: CompletedBookingListProps) 
               <div className="flex flex-col md:flex-row">
                 <div className="relative w-full md:w-[410px] aspect-video md:aspect-auto md:h-[300px]">
                   <img
-                    src={booking.contactPerson.image}
+                    src={booking.contactPerson.image[0]}
                     alt={booking.contactPerson.name}
                     className="w-full h-48 md:h-full object-cover"
                   />
