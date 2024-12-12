@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id              Int     @id @default(autoincrement())
+  name            String? @unique
+  iconUrl         String
+  businesses     Business[]
+
+  Booking Booking[]
+}
+
+model Business {
+  id              Int       @id @default(autoincrement())
+  name            String
+  contactPerson   String
+  address         String
+  about           String
+  image           String []
+  category        Category   @relation(fields: [categoryId], references: [id])
+  categoryId      Int
+  email           String     
+  price           Float        @default(0)
+  bookings        Int        @default(0)
+  rating          Int        @default(0)
+  businessStatus  String     @default("active")
+  adminStatus     String     @default("not approved")
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  Booking Booking[]
+}
+
+// model Customer {
+//   id          Int      @id @default(autoincrement())
+//   username    String   @unique
+//   email       String   @unique
+//   password    String
+//   phone       String
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+//   bookings    Booking[] // Relationship to bookings
+// }
+
+// model ServiceProvider {
+//   id          Int      @id @default(autoincrement())
+//   username    String   @unique
+//   email       String   @unique
+//   password    String
+//   phone       String
+//   about       String
+//   service     String   // Services offered by the provider
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+  
+// }
+
+model Account {
+    id                 String  @id @default(cuid())
+    userId             String
+    type               String
+    provider           String
+    providerAccountId  String
+    refresh_token      String? @db.Text
+    access_token       String? @db.Text
+    expires_at         Int?
+    token_type         String?
+    scope              String?
+    id_token           String? @db.Text
+    session_state      String?
+    oauth_token_secret String?
+    oauth_token        String?
+ 
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+    @@unique([provider, providerAccountId])
+}
+ 
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+ 
+model User {
+    id            String    @id @default(cuid())
+    username      String?   @unique 
+    email         String?   @unique
+    password      String?
+    phone         String?
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    name          String?
+    emailVerified DateTime?
+    image         String?
+    address       String?  
+    accounts      Account[]
+    sessions      Session[]
+
+    Booking Booking[]
+}
+ 
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+ 
+    @@unique([identifier, token])
+}
+
+model Booking {
+  id                Int      @id @default(autoincrement())
+  contactPersonId   Int      // Foreign key for Business (contact person)
+  contactPerson     Business @relation(fields: [contactPersonId], references: [id])
+  userId            String   // Reference to User model's id
+  username          User     @relation(fields: [userId], references: [id])
+  userEmail         String
+  categoryId        Int      // Foreign key for Category
+  category          Category @relation(fields: [categoryId], references: [id])
+  date              String // The date of the booking
+  time              String // The time of the booking
+  location          String // The location of the booking's service
+  status            String   // Booking status (e.g., completed, incompleted, deleted)
+  rating            Int        @default(0)
+  reviews           String    @default("")
+  captureId         String?
+  createdAt         DateTime @default(now()) // Timestamp when the booking was created
+  updatedAt         DateTime @updatedAt      // Automatically updates when record is changed
+}
