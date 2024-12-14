@@ -5,20 +5,37 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 
+// interface Booking {
+//   id: string;
+//   status: string;
+//   contactPerson: {
+//     name: string;
+//     contactPerson: string;
+//     address: string;
+//     images?: { url: string }[]; // Optional image URL
+//     price?: string;
+//   };
+//   date: string;
+//   time: string;
+//   price?: number | null; // Allow for null or missing prices
+//   deletedAt?: string | null; // Timestamp of when it was deleted
+// }
+
 interface Booking {
+  status: any;
+  rating: any;
+  contactPerson: any; // Adjust this type based on your actual data structure
   id: string;
-  status: string;
-  contactPerson: {
+  businessList: {
     name: string;
     contactPerson: string;
     address: string;
-    image?: string; // Optional image URL
-    price?: string;
+    images?: { url: string }[]; // Optional
   };
   date: string;
   time: string;
-  price?: number | null; // Allow for null or missing prices
-  deletedAt?: string | null; // Timestamp of when it was deleted
+  price?: number | null; 
+  deletedAt?: string | null; 
 }
 
 interface DeletedBookingListProps {
@@ -43,7 +60,7 @@ function DeletedBookingList({ deletedBookings }: DeletedBookingListProps) {
                 {/* Image Section */}
                 <div className="relative w-full md:w-[410px] aspect-video md:aspect-auto md:h-[300px]">
                     <img
-                        src={booking.contactPerson.image}
+                        src={booking.contactPerson.image[0]}
                         alt={booking.contactPerson.name}
                         className="w-full h-48 md:h-full object-cover"
                         />

@@ -125,7 +125,7 @@ export default function SignInForm() {
     if(signInData?.error) {
       toast({
         title: "Error",
-        description: signInData.error,
+        description: 'Email and password does not match!',
         variant: 'destructive',
       })
     } else {

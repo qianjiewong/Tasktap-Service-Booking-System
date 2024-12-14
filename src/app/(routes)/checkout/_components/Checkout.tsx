@@ -29,13 +29,15 @@ const Checkout = () => {
     
     // Split location by commas and trim each part
     const parts = location.split(",").map((part) => part.trim());
+
+    const zipIndex = parts.findIndex((part) => /\d{5}/.test(part));
   
     return {
-      addressLine1: parts.slice(0, 2).join(", ") || "", // First part is Address Line 1
-      addressLine2: parts[2] || "",
-      zip: parts[3]?.match(/\d{5}/)?.[0] || "", // Extract 5-digit ZIP code
-      city: parts[4] || "", // Third part is the city
-      state: parts[5] || "", // Fourth part is the state
+      addressLine1: parts.slice(0, zipIndex - 1).join(", "), // Before the second-to-last part before ZIP
+      addressLine2: parts[zipIndex - 1] || "", // Just before the ZIP code
+      zip: parts[zipIndex]?.match(/\d{5}/)?.[0] || "", // The part with the 5-digit ZIP code
+      city: parts[zipIndex + 1] || "", // The part after ZIP code
+      state: parts[zipIndex + 2] || "", // The part after the city
     };
   };
 
@@ -356,24 +358,24 @@ const Checkout = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="address" className="text-sm font-medium text-gray-700">Address Line 1</Label>
+                    <Label htmlFor="addressLine1" className="text-sm font-medium text-gray-700">Address Line 1</Label>
                     <Input
                       id="addressLine1"
-                      name="address"
+                      name="addressLine1"
                       value={billingDetails.addressLine1}
                       onChange={handleChange}
-                      placeholder="Street Address"
+                      placeholder="Street Address Line 1"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-violet-500 focus:border-violet-500"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="address" className="text-sm font-medium text-gray-700">Address Line 2</Label>
+                    <Label htmlFor="addressLine2" className="text-sm font-medium text-gray-700">Address Line 2</Label>
                     <Input
                       id="addressLine2"
-                      name="address"
+                      name="addressLine2"
                       value={billingDetails.addressLine2}
                       onChange={handleChange}
-                      placeholder="Street Address"
+                      placeholder="Street Address Line 2"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-violet-500 focus:border-violet-500"
                     />
                   </div>

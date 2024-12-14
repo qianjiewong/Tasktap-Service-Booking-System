@@ -16,7 +16,7 @@ import {
           <SelectItem value="Johor">Johor</SelectItem>
           <SelectItem value="Kedah">Kedah</SelectItem>
           <SelectItem value="Kelantan">Kelantan</SelectItem>
-          <SelectItem value="Kuala Lumpur">Kuala Lumpur</SelectItem>
+          <SelectItem value="Kuala Lumpur">Wilayah Persekutuan Kuala Lumpur</SelectItem>
           <SelectItem value="Labuan">Labuan</SelectItem>
           <SelectItem value="Melaka">Melaka</SelectItem>
           <SelectItem value="Negeri Sembilan">Negeri Sembilan</SelectItem>

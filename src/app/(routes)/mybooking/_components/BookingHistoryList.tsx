@@ -8,18 +8,21 @@ import { toast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface Booking {
+  captureId: string;
+  status: any;
+  rating: any;
+  contactPerson: any; // Adjust this type based on your actual data structure
   id: string;
-  status: string;
-  captureId: string; // PayPal capture ID for refunds
-  contactPerson: {
+  businessList: {
     name: string;
     contactPerson: string;
     address: string;
-    image?: string; // Optional image URL
+    images?: { url: string }[]; // Optional
   };
   date: string;
   time: string;
 }
+
 
 interface BookingHistoryListProps {
   bookingHistory: Booking[];
@@ -114,7 +117,7 @@ function BookingHistoryList({ bookingHistory, refreshBookings }: BookingHistoryL
                 <div className="flex flex-col md:flex-row">
                   <div className="relative w-full md:w-[410px] aspect-video md:aspect-auto md:h-[300px]">
                     <img
-                      src={booking.contactPerson.image || '/placeholder.png'}
+                      src={booking.contactPerson.image[0]}
                       alt={booking.contactPerson.name}
                       className="w-full h-48 md:h-full object-cover"
                     />

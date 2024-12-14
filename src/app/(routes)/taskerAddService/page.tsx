@@ -65,52 +65,123 @@ export default function AddService() {
   const [dragOver, setDragOver] = React.useState(false);
   const [uploadProgress, setUploadProgress] = React.useState<number[]>([]);
 
+  // React.useEffect(() => {
+  //   const fetchUserAddress = async () => {
+  //     if (!session?.user?.email) {
+  //       console.warn("User is not authenticated or email is missing.");
+  //       return;
+  //     }
+    
+  //     try {
+  //       const response = await fetch(`/api/userDetails?email=${session.user.email}`);
+  //       if (!response.ok) {
+  //         throw new Error(`Failed to fetch user details. Status: ${response.status}`);
+  //       }
+    
+  //       const data: UserData = await response.json();
+  //       console.log("API Response:", data);
+    
+  //       const fullAddress = data.address || "";
+  //       console.log("Fetched Address:", fullAddress);
+    
+  //       if (!fullAddress) {
+  //         console.warn("No address found for the user.");
+  //         return;
+  //       }
+    
+  //       // Split and parse the address
+  //       const addressParts = fullAddress
+  //         .split(",")
+  //         .map((part: string) => part.trim());
+  //       console.log("Parsed Address Parts:", addressParts);
+    
+  //       // Ensure all components exist and set them in the formData state
+  //       setFormData((prev) => ({
+  //         ...prev,
+  //         addressLine1: `${addressParts[0]}, ${addressParts[1]}` || "",
+  //         addressLine2: addressParts[2] || "",
+  //         postcode: addressParts[3] || "",
+  //         city: addressParts[4] || "",
+  //         state: addressParts[5] || "",
+  //       }));
+  //     } catch (error) {
+  //       console.error("Error fetching user address:", error);
+  //     }
+  //   };
+
+  //   fetchUserAddress();
+  // }, [session]);
+
   React.useEffect(() => {
     const fetchUserAddress = async () => {
       if (!session?.user?.email) {
         console.warn("User is not authenticated or email is missing.");
         return;
       }
-    
+  
       try {
         const response = await fetch(`/api/userDetails?email=${session.user.email}`);
         if (!response.ok) {
           throw new Error(`Failed to fetch user details. Status: ${response.status}`);
         }
-    
+  
         const data: UserData = await response.json();
         console.log("API Response:", data);
-    
-        const fullAddress = data.address || "";
-        console.log("Fetched Address:", fullAddress);
-    
+  
+        const fullAddress = data.address;
         if (!fullAddress) {
           console.warn("No address found for the user.");
           return;
         }
-    
-        // Split and parse the address
-        const addressParts = fullAddress
-          .split(",")
-          .map((part: string) => part.trim());
-        console.log("Parsed Address Parts:", addressParts);
-    
-        // Ensure all components exist and set them in the formData state
+  
+        console.log("Fetched Address:", fullAddress);
+  
+        // Handle fullAddress as a string
+        let addressString = "";
+        if (typeof fullAddress === "string") {
+          addressString = fullAddress;
+        } else if (typeof fullAddress === "object") {
+          // Handle if `fullAddress` is an object
+          addressString = [
+            fullAddress.addressLine1,
+            fullAddress.addressLine2,
+            fullAddress.postcode,
+            fullAddress.city,
+            fullAddress.state,
+          ]
+            .filter((part) => part && part.trim() !== "") // Filter out empty or undefined parts
+            .join(", ");
+        }
+  
+        console.log("Address String:", addressString);
+  
+        // Split the address string into parts
+        const addressParts = addressString.split(",").map((part) => part.trim());
+        console.log("Address Parts:", addressParts);
+  
+        // Find the ZIP code index
+        const zipIndex = addressParts.findIndex((part) => /^\d{5}$/.test(part));
+        if (zipIndex === -1) {
+          throw new Error("Invalid address format. ZIP code not found.");
+        }
+  
+        // Ensure valid parsing and set formData
         setFormData((prev) => ({
           ...prev,
-          addressLine1: `${addressParts[0]}, ${addressParts[1]}` || "",
-          addressLine2: addressParts[2] || "",
-          postcode: addressParts[3] || "",
-          city: addressParts[4] || "",
-          state: addressParts[5] || "",
+          addressLine1: addressParts.slice(0, zipIndex - 1).join(", "), // Combine all parts before ZIP - 1
+          addressLine2: addressParts[zipIndex - 1] || "", // Part just before ZIP
+          postcode: addressParts[zipIndex] || "", // ZIP code
+          city: addressParts[zipIndex + 1] || "", // City (next part after ZIP)
+          state: addressParts[zipIndex + 2] || "", // State (next part after City)
         }));
       } catch (error) {
-        console.error("Error fetching user address:", error);
+        console.error("Error fetching address:", error);
       }
     };
-
+  
     fetchUserAddress();
   }, [session]);
+
 
   React.useEffect(() => {
     if (!session) setShowAuthDialog(true);
