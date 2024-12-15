@@ -86,7 +86,7 @@ export default function ReviewCarousel() {
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8 md:py-16 mt-8 md:mt-12">
-      <h1 className="text-2xl md:text-4xl font-bold mb-6 md:mb-8 text-center">
+      <h1 className="text-2xl md:text-4xl font-bold mb-8 md:mb-14 text-center">
         See what our {" "} 
         <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
            happy customers say about Tasktap

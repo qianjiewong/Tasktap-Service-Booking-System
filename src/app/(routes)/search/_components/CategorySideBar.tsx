@@ -49,7 +49,8 @@ export default function CategorySideBar({ onSelect }: CategorySideBarProps) {
   }
 
   return (
-    <div className="w-full p-4 bg-white">
+    <div className="w-full min-h-full p-4 bg-white overflow-y-auto">
+     
       <h2 className="text-2xl font-extrabold text-violet-700 mb-6">Categories</h2>
       
       {isLoading ? (

@@ -24,8 +24,8 @@ export default async function Home() {
           <BusinessList />
           <ReviewCarousel />
           <GuaranteeSection />
-          <User />
-          {JSON.stringify(session)}
+          {/* <User />
+          {JSON.stringify(session)} */}
       </div>
     </div>
   );

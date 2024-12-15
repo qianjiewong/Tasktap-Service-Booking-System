@@ -53,7 +53,7 @@ function HeroSection() {
         >
           <Link href="/search/1" className="block">
             <Button 
-              className="w-full h-14 text-xl font-medium rounded-full bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+              className="w-full h-10 sm:h-12 md:h-14 text-base sm:text-lg md:text-xl font-medium rounded-full bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
             >
               <span className="mr-2">Browse Services</span>
               <ArrowRight className="h-6 w-6 inline-block transition-transform duration-300 group-hover:translate-x-1" />

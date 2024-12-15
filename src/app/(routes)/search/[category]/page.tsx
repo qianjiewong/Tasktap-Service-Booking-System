@@ -280,8 +280,8 @@ export default function BusinessByCategory() {
     <div className="space-y-6">
       <div className="top-0 z-10 bg-white border-b w-full">
         <div className="max-w-5xl mx-auto px-4">
-          <div className="flex items-center space-x-2 mb-6">
-            <div className="relative flex-grow ">
+          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 mb-6">
+            <div className="relative flex-grow w-full sm:w-auto">
               <Input
                 type="text"
                 value={searchAddress}
@@ -291,13 +291,15 @@ export default function BusinessByCategory() {
               />
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
             </div>
-            <Button onClick={handleSearch} className="rounded-full bg-violet-600 hover:bg-violet-700">
-              Search
-            </Button>
-            <Button onClick={handleUseCurrentLocation} variant="outline" className="rounded-full">
-              <MapPin className="w-5 h-5 mr-2 text-violet-600" />
-              Use Current Location
-            </Button>
+            <div className="flex space-x-2 w-full sm:w-auto">
+              <Button onClick={handleSearch} className="rounded-full bg-violet-600 hover:bg-violet-700 flex-grow sm:flex-grow-0">
+                Search
+              </Button>
+              <Button onClick={handleUseCurrentLocation} variant="outline" className="rounded-full flex-grow sm:flex-grow-0">
+                <MapPin className="w-5 h-5 mr-2 text-violet-600" />
+                Use Current Location
+              </Button>
+            </div>
           </div>
         </div>
       </div>
