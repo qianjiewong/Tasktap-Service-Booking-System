@@ -343,7 +343,7 @@ export default function AddService() {
 
       toast({
         title: "Success!",
-        description: "Your business has been successfully created.",
+        description: "Your business has been successfully created. It is under pending to be approve now.",
         variant: "default",
         className: "bg-green-500 text-white border-green-600",
       });

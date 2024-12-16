@@ -61,13 +61,18 @@ export default function MyBookingPage() {
     if (status === "authenticated") {
       fetchBookingData()
     } else if (status === "unauthenticated") {
-      setLoading(false)
-      router.push("/sign-in")
-      toast({ 
-        title: "User Not Authenticated", 
-        description: "Please login to view bookings.", 
-        variant: "destructive" 
-      })
+      // Add a small delay before redirecting to allow for any pending session updates
+      const timer = setTimeout(() => {
+        setLoading(false)
+        router.push("/sign-in")
+        toast({ 
+          title: "User Not Authenticated", 
+          description: "Please login to view bookings.", 
+          variant: "destructive" 
+        })
+      }, 500)
+
+      return () => clearTimeout(timer)
     }
   }, [status, fetchBookingData, router])
 
