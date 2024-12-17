@@ -2,7 +2,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Calendar, CheckCircle2, Clock, MapPin, User } from 'lucide-react';
+import { Calendar, Clock, MapPin, User } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -10,7 +10,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 
 interface Booking {
   captureId: string;
-  status: any;
+  status: string;
   rating: any;
   contactPerson: any; // Adjust this type based on your actual data structure
   id: string;
@@ -20,10 +20,9 @@ interface Booking {
     address: string;
     images?: { url: string }[]; // Optional
   };
-  date: string;
-  time: string;
+  date: string; // format: 'YYYY-MM-DD'
+  time: string; // format: 'HH:MM AM/PM'
 }
-
 
 interface BookingHistoryListProps {
   bookingHistory: Booking[];
@@ -41,18 +40,13 @@ const getStatusColor = (status: string) => {
   }
 };
 
-// Helper function to check if the date is tomorrow
-const isTomorrow = (date: string): boolean => {
-  const today = new Date();
-  const serviceDate = new Date(date);
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
+// Helper function to check if booking is within 24 hours
+const isLessThan24Hours = (date: string, time: string): boolean => {
+  const currentTime = new Date(); // Current date and time
+  const bookingDateTime = new Date(`${date} ${time}`); // Combine date and time
 
-  return (
-    serviceDate.getDate() === tomorrow.getDate() &&
-    serviceDate.getMonth() === tomorrow.getMonth() &&
-    serviceDate.getFullYear() === tomorrow.getFullYear()
-  );
+  const timeDifference = bookingDateTime.getTime() - currentTime.getTime(); // Difference in milliseconds
+  return timeDifference > 0 && timeDifference <= 24 * 60 * 60 * 1000; // Less than 24 hours
 };
 
 async function cancelAndRefundBooking(bookingId: string, captureId: string) {
@@ -102,11 +96,11 @@ function BookingHistoryList({ bookingHistory, refreshBookings }: BookingHistoryL
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [bookingToCancel, setBookingToCancel] = useState<{ id: string; captureId: string } | null>(null);
 
-  const handleCancelBooking = (id: string, captureId: string, date: string) => {
-    if (isTomorrow(date)) {
+  const handleCancelBooking = (id: string, captureId: string, date: string, time: string) => {
+    if (isLessThan24Hours(date, time)) {
       toast({
-        title: "Late Cancellation Not Allow",
-        description: "Bookings cannot be cancelled if the service date is tomorrow.",
+        title: "Late Cancellation Not Allowed",
+        description: "Bookings cannot be cancelled if the service is less than 24 hours away.",
         variant: "destructive",
       });
       return;
@@ -135,8 +129,6 @@ function BookingHistoryList({ bookingHistory, refreshBookings }: BookingHistoryL
           <p className="text-center text-gray-500">No booking history available.</p>
         ) : (
           bookingHistory.map((booking) => {
-            const serviceIsTomorrow = isTomorrow(booking.date);
-
             return (
               <Card key={booking.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <CardContent className="p-0">
@@ -180,7 +172,8 @@ function BookingHistoryList({ bookingHistory, refreshBookings }: BookingHistoryL
                           size="sm"
                           variant="destructive"
                           className="w-full sm:w-auto mt-4"
-                          onClick={() => handleCancelBooking(booking.id, booking.captureId, booking.date)}
+                          onClick={() => handleCancelBooking(booking.id, booking.captureId, booking.date, booking.time)}
+                          disabled={loadingBookingId === booking.id}
                         >
                           {loadingBookingId === booking.id ? 'Cancelling...' : 'Cancel Booking'}
                         </Button>
@@ -214,8 +207,6 @@ function BookingHistoryList({ bookingHistory, refreshBookings }: BookingHistoryL
       </Dialog>
     </TooltipProvider>
   );
-
-
 }
 
 export default BookingHistoryList;

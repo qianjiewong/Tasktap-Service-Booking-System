@@ -16,7 +16,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           reviews: { not: "" }, // Only fetch bookings with non-empty reviews
           rating: { gt: 0 }, // Only fetch bookings with a rating greater than 0
         },
-        take: 3, // Limit to 3 reviews
         include: {
           category: true, // Include category if necessary
           username: {
