@@ -91,7 +91,7 @@ const Checkout = () => {
 
   const fetchUserDetails = async () => {
     try {
-      const response = await fetch("/api/userDetails"); // Replace with your API route
+      const response = await fetch("/api/userDetails"); 
       if (response.ok) {
         const userData = await response.json();
         setBillingDetails((prevDetails) => ({

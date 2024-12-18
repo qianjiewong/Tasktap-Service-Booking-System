@@ -15,11 +15,6 @@ const userSchema = z.object({
     .string()
     .min(1, "Phone number is required")
     .regex(/^(\+?\d{1,3}[-.\s]?)?\d{10}$/, "Invalid phone number format"),
-  // zipCode: z
-  //   .string()
-  //   .min(5, "Zip Code must be exactly 5 digits")
-  //   .max(5, "Zip Code must be exactly 5 digits")
-  //   .regex(/^\d{5}$/, "Zip Code must be numeric and 5 digits only"),
 });
 
 export async function POST(req: Request) {
@@ -56,7 +51,6 @@ export async function POST(req: Request) {
         email,
         password: hashedPassword,
         phone,
-        // address: zipCode,
       },
     });
     const { password: newUserPassword, ...rest } = newUser;

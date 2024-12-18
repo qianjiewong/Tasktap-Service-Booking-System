@@ -284,9 +284,6 @@ export default function TaskerOrdersPage() {
     return <div className="text-red-500">{error}</div>;
   }
 
-
-
-
   const handleComplete = async (bookingId: number) => {
     try {
       const response = await fetch('/api/markBookingComplete', {

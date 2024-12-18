@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ error: 'Business ID is required' });
       }
 
-      // Fetch reviews and ratings from the Booking table, limiting the result to 3 reviews
+      // Fetch reviews and ratings from the Booking table
       const reviews = await db.booking.findMany({
         where: {
           contactPersonId: Number(businessId), // Filter by business ID

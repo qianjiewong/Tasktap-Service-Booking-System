@@ -129,9 +129,6 @@ export default function SignInForm() {
         variant: 'destructive',
       })
     } else {
-      // router.push('/')
-      // router.refresh()
-      // window.location.reload();
       router.push('/')
       router.refresh()
       toast({
