@@ -182,6 +182,7 @@ export default function BusinessByCategory() {
                   <div className="aspect-video w-full overflow-hidden rounded-md mb-4">
                     <img
                       src={business.image[0]}
+                      loading="lazy"
                       alt={business.name}
                       className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
                     />
