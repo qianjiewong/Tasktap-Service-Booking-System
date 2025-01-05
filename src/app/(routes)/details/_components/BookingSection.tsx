@@ -81,10 +81,12 @@ function BookingSection({ children, business }: BookingSectionProps) {
   useEffect(() => {
     const generateTimeSlots = () => {
       const timeList: TimeSlot[] = [];
-      for (let i = 10; i <= 12; i++) {
+      for (let i = 10; i <= 11; i++) {
         timeList.push({ time: `${i}:00 AM` });
         timeList.push({ time: `${i}:30 AM` });
       }
+      timeList.push({ time: `12:00 PM` }); 
+      timeList.push({ time: `12:30 PM` });
       for (let i = 1; i <= 6; i++) {
         timeList.push({ time: `${i}:00 PM` });
         timeList.push({ time: `${i}:30 PM` });
