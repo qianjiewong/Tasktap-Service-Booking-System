@@ -212,7 +212,7 @@ export default function SignUpForm() {
                     <FormLabel>Phone</FormLabel>
                     <FormControl>
                       <Input 
-                        placeholder="+0125557777" 
+                        placeholder="+60125557777" 
                         {...field}
                         className="h-11"
                       />

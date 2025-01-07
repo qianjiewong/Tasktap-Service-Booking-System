@@ -114,7 +114,10 @@ function BookingHistoryList({ bookingHistory, refreshBookings }: BookingHistoryL
       setLoadingBookingId(bookingToCancel.id);
       const isSuccess = await cancelAndRefundBooking(bookingToCancel.id, bookingToCancel.captureId);
       if (isSuccess) {
-        refreshBookings();
+        // Add a 2-second delay before refreshing bookings
+        setTimeout(() => {
+          refreshBookings();
+        }, 3000); // 3000 milliseconds = 3 seconds
       }
       setLoadingBookingId(null);
       setIsDialogOpen(false);

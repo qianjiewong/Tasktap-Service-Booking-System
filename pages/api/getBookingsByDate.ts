@@ -6,20 +6,21 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const { date } = req.query;
+    const { date, businessId } = req.query;
 
-    // Ensure date is a string
-    if (!date || Array.isArray(date)) {
-      return res
-        .status(400)
-        .json({ error: "Date must be a single string value." });
+    // Ensure date and businessId are valid strings
+    if (!date || Array.isArray(date) || !businessId || Array.isArray(businessId)) {
+      return res.status(400).json({ error: "Date and businessId must be single string values." });
     }
 
     try {
       const bookings = await db.booking.findMany({
         where: {
           date: {
-            equals: date, // Now date is guaranteed to be a string
+            equals: date, // Ensure the date matches
+          },
+          contactPersonId: {
+            equals: parseInt(businessId), // Convert businessId to integer
           },
         },
         select: {

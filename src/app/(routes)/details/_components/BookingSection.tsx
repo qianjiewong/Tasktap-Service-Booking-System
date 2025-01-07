@@ -110,7 +110,7 @@ function BookingSection({ children, business }: BookingSectionProps) {
       const formattedDate = formatDateToYYYYMMDD(date);
       try {
         const response = await fetch(
-          `/api/getBookingsByDate?date=${formattedDate}`
+          `/api/getBookingsByDate?date=${formattedDate}&businessId=${business.id}`
         );
         if (response.ok) {
           const bookings = await response.json();
@@ -127,48 +127,6 @@ function BookingSection({ children, business }: BookingSectionProps) {
     };
     fetchBookedSlots();
   }, [date]);
-
-  // useEffect(() => {
-  //   const fetchUserAddress = async () => {
-  //     if (status !== "authenticated" || !session?.user?.email) {
-  //       console.warn("User is not authenticated or email is missing.");
-  //       return;
-  //     }
-  
-  //     try {
-  //       const response = await fetch(`/api/userDetails`);
-  //       if (!response.ok) {
-  //         throw new Error(`Failed to fetch user details. Status: ${response.status}`);
-  //       }
-  
-  //       const data = await response.json();
-  //       console.log("API Response:", data);
-  
-  //       const userAddress = data.address || "";
-  //       console.log("Fetched User Address:", userAddress);
-  
-  //       if (!userAddress) {
-  //         console.warn("No address found for the user.");
-  //         return;
-  //       }
-  
-  //       // Parse the address parts
-  //       const addressParts = userAddress.split(",").map((part: string) => part.trim());
-  //       console.log("Parsed Address Parts:", addressParts);
-  
-  //       // Assign parts to state
-  //       setAddressLine1(addressParts[0] && addressParts[1] ? `${addressParts[0]}, ${addressParts[1]}` : "");
-  //       setAddressLine2(addressParts[2] || "");
-  //       setPostcode(addressParts[3] || "");
-  //       setCity(addressParts[4] || "");
-  //       setState(addressParts[5] || "");
-  //     } catch (error) {
-  //       console.error("Error fetching user address:", error);
-  //     }
-  //   };
-  
-  //   fetchUserAddress();
-  // }, [status, session]);
 
   useEffect(() => {
     const fetchUserAddress = async () => {
